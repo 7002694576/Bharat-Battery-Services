@@ -1,1 +1,663 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin - Bharat Battery Services</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        header p {
+            margin: 7px 0 0;
+            color: #d1d5db;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        button,
+        .btn {
+            display: inline-block;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .add-btn {
+            background: #16a34a;
+            color: white;
+            margin-top: 18px;
+        }
+
+        .edit-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            color: white;
+        }
+
+        .home-btn {
+            background: #f59e0b;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        .product h3 {
+            margin: 10px 0;
+        }
+
+        .product p {
+            margin: 6px 0;
+            color: #555;
+        }
+
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .orders-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+
+        .status-form {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .status-form select {
+            min-width: 130px;
+        }
+
+        .update-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 22px;
+            }
+
+            .container {
+                width: 94%;
+            }
+
+            .section {
+                padding: 18px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<header>
+
+    <h1>Bharat Battery Services</h1>
+
+    <p>Admin Panel</p>
+
+    <a
+        href="{{ url_for('home') }}"
+        class="btn home-btn"
+    >
+        View Website
+    </a>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- =====================================================
+         ADD PRODUCT
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>Add New Product</h2>
+
+        <form
+            action="{{ url_for('add_product') }}"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <div class="form-grid">
+
+                <div>
+
+                    <label>
+                        Product Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Example: TG400L"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Category
+                    </label>
+
+                    <select
+                        name="category"
+                        required
+                    >
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Car Battery">
+                            Car Battery
+                        </option>
+
+                        <option value="Two-Wheeler">
+                            Two-Wheeler
+                        </option>
+
+                        <option value="Inverter Battery">
+                            Inverter Battery
+                        </option>
+
+                        <option value="Inverter">
+                            Inverter
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Capacity
+                    </label>
+
+                    <input
+                        type="text"
+                        name="capacity"
+                        placeholder="Example: 35 Ah"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Price
+                    </label>
+
+                    <input
+                        type="text"
+                        name="price"
+                        placeholder="Example: 3835"
+                        required
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Warranty
+                    </label>
+
+                    <input
+                        type="text"
+                        name="warranty"
+                        placeholder="Warranty Available"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Product Image
+                    </label>
+
+                    <input
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="add-btn"
+            >
+                + Add Product
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCTS
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>Products</h2>
+
+        <div class="products">
+
+            {% for product in products %}
+
+            <div class="product">
+
+                {% if product.image %}
+
+                    <img
+                        src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}"
+                    >
+
+                {% endif %}
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                <p>
+                    <strong>Category:</strong>
+                    {{ product.category }}
+                </p>
+
+
+                <p>
+                    <strong>Capacity:</strong>
+                    {{ product.capacity }}
+                </p>
+
+
+                <p>
+                    <strong>Price:</strong>
+
+                    {% if "Contact" in product.price %}
+                        {{ product.price }}
+                    {% else %}
+                        ₹{{ product.price }}
+                    {% endif %}
+
+                </p>
+
+
+                <p>
+                    {{ product.warranty }}
+                </p>
+
+
+                <div class="actions">
+
+                    <a
+                        href="{{ url_for('edit_product', product_id=product._id) }}"
+                        class="btn edit-btn"
+                    >
+                        Edit
+                    </a>
+
+
+                    <a
+                        href="{{ url_for('delete_product', product_id=product._id) }}"
+                        class="btn delete-btn"
+                        onclick="return confirm('Delete this product?');"
+                    >
+                        Delete
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <p>
+                No products available.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ORDERS
+    ====================================================== -->
+
+    <div class="section">
+
+        <h2>Customer Orders</h2>
+
+        <div class="orders-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Mobile
+                        </th>
+
+                        <th>
+                            Address
+                        </th>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th>
+                            Qty
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                        <th>
+                            Delete
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for order in orders %}
+
+                    <tr>
+
+                        <td>
+                            {{ order.created_at.strftime('%d-%m-%Y %H:%M') if order.created_at else '' }}
+                        </td>
+
+                        <td>
+                            {{ order.customer_name }}
+                        </td>
+
+                        <td>
+                            {{ order.mobile }}
+                        </td>
+
+                        <td>
+                            {{ order.address }}
+                        </td>
+
+                        <td>
+                            {{ order.product_name }}
+                        </td>
+
+                        <td>
+                            {{ order.quantity }}
+                        </td>
+
+                        <td>
+                            {{ order.status }}
+                        </td>
+
+                        <td>
+
+                            <form
+                                action="{{ url_for('update_order', order_id=order._id) }}"
+                                method="POST"
+                                class="status-form"
+                            >
+
+                                <select name="status">
+
+                                    <option
+                                        value="Pending"
+                                        {% if order.status == "Pending" %}selected{% endif %}
+                                    >
+                                        Pending
+                                    </option>
+
+                                    <option
+                                        value="Confirmed"
+                                        {% if order.status == "Confirmed" %}selected{% endif %}
+                                    >
+                                        Confirmed
+                                    </option>
+
+                                    <option
+                                        value="Delivered"
+                                        {% if order.status == "Delivered" %}selected{% endif %}
+                                    >
+                                        Delivered
+                                    </option>
+
+                                    <option
+                                        value="Cancelled"
+                                        {% if order.status == "Cancelled" %}selected{% endif %}
+                                    >
+                                        Cancelled
+                                    </option>
+
+                                </select>
+
+
+                                <button
+                                    type="submit"
+                                    class="btn update-btn"
+                                >
+                                    Update
+                                </button>
+
+                            </form>
+
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('delete_order', order_id=order._id) }}"
+                                class="btn delete-btn"
+                                onclick="return confirm('Delete this order?');"
+                            >
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            style="text-align:center;"
+                        >
+                            No customer orders yet.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+</body>
+</html>
+```
 
