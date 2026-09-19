@@ -1,1 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Bharat Battery Services</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .brand p {
+            margin: 4px 0 0;
+            color: #555;
+            font-size: 13px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #222;
+            margin-left: 20px;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #111827, #374151);
+            color: white;
+            padding: 55px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            margin: 0 0 12px;
+            font-size: 38px;
+        }
+
+        .hero p {
+            margin: 8px auto;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            margin-top: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 22px;
+            margin: 5px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-call {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-order {
+            background: #f59e0b;
+            color: white;
+        }
+
+        section {
+            padding: 45px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 30px;
+        }
+
+        .about {
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 22px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+
+        .product-card h3 {
+            margin: 8px 0;
+            font-size: 20px;
+        }
+
+        .product-card p {
+            margin: 6px 0;
+            color: #555;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 12px 0;
+        }
+
+        .order-box {
+            background: white;
+            max-width: 650px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #16a34a;
+            color: white;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .contact-box {
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .contact-box p {
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        footer {
+            background: #111827;
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            margin-top: 20px;
+        }
+
+        .whatsapp {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #25D366;
+            color: white;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 27px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+            z-index: 2000;
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .brand h1 {
+                font-size: 18px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 28px;
+            }
+
+            .hero {
+                padding: 40px 15px;
+            }
+
+            section {
+                padding: 35px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo-area">
+
+        <img
+            src="{{ url_for('static', filename='logoo.png') }}"
+            class="logo"
+            alt="Bharat Battery Services Logo"
+        >
+
+        <div class="brand">
+            <h1>Bharat Battery Services</h1>
+            <p>TATA Batteries Authorized Agency</p>
+        </div>
+
+    </div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#products">Products</a>
+        <a href="#order">Order</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+</header>
+
+
+<!-- HERO -->
+
+<div class="hero" id="home">
+
+    <h2>Reliable Batteries for Every Need</h2>
+
+    <p>
+        Car Batteries, Two-Wheeler Batteries, Inverter Batteries
+        and Home Inverters.
+    </p>
+
+    <p>
+        Genuine Products • Warranty Available • Local Service
+    </p>
+
+    <div class="hero-buttons">
+
+        <a
+            href="tel:9450060833"
+            class="btn btn-call"
+        >
+            📞 Call Now
+        </a>
+
+        <a
+            href="#order"
+            class="btn btn-order"
+        >
+            🛒 Order Now
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ABOUT -->
+
+<section>
+
+    <h2>About Us</h2>
+
+    <div class="about">
+
+        <p>
+            Welcome to <strong>Bharat Battery Services</strong>.
+        </p>
+
+        <p>
+            We provide quality batteries and power solutions
+            for cars, two-wheelers, homes and inverter systems.
+        </p>
+
+        <p>
+            We are a <strong>TATA Batteries Authorized Agency</strong>.
+        </p>
+
+        <p>
+            Proprietor: <strong>Haji Mustakeem Ahmad</strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- PRODUCTS -->
+
+<section id="products">
+
+    <h2>Our Products</h2>
+
+    <div class="products">
+
+        {% for product in products %}
+
+        <div class="product-card">
+
+            {% if product.image %}
+
+                <img
+                    src="{{ url_for('static', filename=product.image) }}"
+                    alt="{{ product.name }}"
+                >
+
+            {% else %}
+
+                <img
+                    src="{{ url_for('static', filename='tg400l.png') }}"
+                    alt="{{ product.name }}"
+                >
+
+            {% endif %}
+
+            <h3>
+                {{ product.name }}
+            </h3>
+
+            <p>
+                <strong>Category:</strong>
+                {{ product.category }}
+            </p>
+
+            <p>
+                <strong>Capacity:</strong>
+                {{ product.capacity }}
+            </p>
+
+            {% if product.price %}
+
+            <div class="price">
+                {% if "Contact" in product.price %}
+                    {{ product.price }}
+                {% else %}
+                    ₹{{ product.price }}
+                {% endif %}
+            </div>
+
+            {% endif %}
+
+            {% if product.warranty %}
+
+            <p>
+                {{ product.warranty }}
+            </p>
+
+            {% endif %}
+
+            <a
+                href="#order"
+                class="btn btn-order"
+                onclick="selectProduct('{{ product.name }}')"
+            >
+                Order This
+            </a>
+
+        </div>
+
+        {% else %}
+
+        <p style="text-align:center; width:100%;">
+            Products will be available soon.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- ORDER -->
+
+<section id="order">
+
+    <h2>Place Your Order</h2>
+
+    <div class="order-box">
+
+        <form
+            action="{{ url_for('order') }}"
+            method="POST"
+        >
+
+            <div class="form-group">
+
+                <label>
+                    Your Name
+                </label>
+
+                <input
+                    type="text"
+                    name="customer_name"
+                    placeholder="Enter your name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Mobile Number
+                </label>
+
+                <input
+                    type="tel"
+                    name="mobile"
+                    placeholder="Enter mobile number"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Address
+                </label>
+
+                <textarea
+                    name="address"
+                    placeholder="Enter your address"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Select Product
+                </label>
+
+                <select
+                    name="product_name"
+                    id="product_name"
+                    required
+                >
+
+                    <option value="">
+                        Select a product
+                    </option>
+
+                    {% for product in products %}
+
+                    <option value="{{ product.name }}">
+                        {{ product.name }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Quantity
+                </label>
+
+                <input
+                    type="number"
+                    name="quantity"
+                    value="1"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit-btn"
+            >
+                Place Order
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- CONTACT -->
+
+<section id="contact">
+
+    <h2>Contact Us</h2>
+
+    <div class="contact-box">
+
+        <p>
+            <strong>Bharat Battery Services</strong>
+        </p>
+
+        <p>
+            Proprietor: Haji Mustakeem Ahmad
+        </p>
+
+        <p>
+            📞 9450060833
+            <br>
+            📞 7905357298
+        </p>
+
+        <p>
+            📍 BR Complex, Civil Lines,
+            <br>
+            Gora Bazar Road,
+            <br>
+            Raebareli - 229001
+        </p>
+
+        <a
+            href="https://wa.me/919450060833"
+            target="_blank"
+            class="btn btn-call"
+        >
+            WhatsApp Us
+        </a>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    <p>
+        © 2026 Bharat Battery Services
+    </p>
+
+    <p>
+        TATA Batteries Authorized Agency
+    </p>
+
+</footer>
+
+
+<a
+    href="https://wa.me/919450060833"
+    target="_blank"
+    class="whatsapp"
+    title="WhatsApp"
+>
+    ☎
+</a>
+
+
+<script>
+
+function selectProduct(productName) {
+
+    const select =
+        document.getElementById("product_name");
+
+    if (select) {
+
+        select.value = productName;
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
