@@ -1,385 +1,76 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from pymongo import MongoClient
-from datetime import datetime
-from bson.objectid import ObjectId
 from werkzeug.utils import secure_filename
+from bson.objectid import ObjectId
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 
-# =========================
+# =========================================================
 # MONGODB
-# =========================
+# =========================================================
 
-client = MongoClient("mongodb://127.0.0.1:27017/")
+MONGO_URI = os.environ.get("MONGO_URI")
 
-db = client["Bharat_Battery_DB"]
+if not MONGO_URI:
+    raise Exception("MONGO_URI environment variable is missing")
 
-orders_collection = db["orders"]
-products_collection = db["products"]
+# IMPORTANT:
+# MongoClient is created only when get_database() is called.
+# This avoids MongoClient being created before Gunicorn forks.
+
+client = None
+db = None
+orders_collection = None
+products_collection = None
 
 
-# =========================
-# IMAGE UPLOAD SETTINGS
-# =========================
+def get_database():
+
+    global client
+    global db
+    global orders_collection
+    global products_collection
+
+    if client is None:
+
+        client = MongoClient(
+            MONGO_URI,
+            serverSelectionTimeoutMS=5000,
+            connectTimeoutMS=5000
+        )
+
+        db = client["Bharat_Battery_DB"]
+
+        orders_collection = db["orders"]
+        products_collection = db["products"]
+
+    return db
+
+
+# =========================================================
+# UPLOAD SETTINGS
+# =========================================================
 
 UPLOAD_FOLDER = "static/uploads"
 
+os.makedirs(
+    UPLOAD_FOLDER,
+    exist_ok=True
+)
+
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-ALLOWED_EXTENSIONS = {
-    "png",
-    "jpg",
-    "jpeg",
-    "webp"
-}
 
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-def allowed_file(filename):
-
-    return (
-        "." in filename
-        and filename.rsplit(".", 1)[1].lower()
-        in ALLOWED_EXTENSIONS
-    )
-
-
-# =========================
-# DEFAULT PRODUCTS
-# =========================
-
-default_products = [
-
-    {
-        "name": "TG400L",
-        "category": "Car Battery",
-        "capacity": "35 Ah",
-        "price": "₹3,835",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "SLV DIN44R",
-        "category": "Car Battery",
-        "capacity": "44 Ah",
-        "price": "₹5,447",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "PREMIO 55D23L",
-        "category": "Car Battery",
-        "capacity": "54 Ah",
-        "price": "₹5,723",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "TGZ4 ADV",
-        "category": "Two-Wheeler",
-        "capacity": "3 Ah",
-        "price": "₹1,182",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "YTZ7",
-        "category": "Two-Wheeler",
-        "capacity": "6 Ah",
-        "price": "₹1,850",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "TG7D",
-        "category": "Two-Wheeler",
-        "capacity": "7 Ah",
-        "price": "₹1,654",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "YTZ5",
-        "category": "Two-Wheeler",
-        "capacity": "4 Ah",
-        "price": "₹1,395",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "TATA Green 150 Ah",
-        "category": "Inverter Battery",
-        "capacity": "150 Ah",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "TATA Green 200 Ah",
-        "category": "Inverter Battery",
-        "capacity": "200 Ah",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "Home Inverter Battery",
-        "category": "Inverter Battery",
-        "capacity": "12V Battery",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "tg400l.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "Home Inverter 800 VA",
-        "category": "Inverter",
-        "capacity": "800 VA",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "inv.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "Home Inverter 1100 VA",
-        "category": "Inverter",
-        "capacity": "1100 VA",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "inv.png",
-        "active": True,
-        "created_at": datetime.now()
-    },
-
-    {
-        "name": "Home Inverter 1500 VA",
-        "category": "Inverter",
-        "capacity": "1500 VA",
-        "price": "Contact for Price",
-        "warranty": "Warranty Available",
-        "image": "inv.png",
-        "active": True,
-        "created_at": datetime.now()
-    }
-]
-
-
-# =========================
-# SEED PRODUCTS
-# =========================
-
-def seed_products():
-
-    count = products_collection.count_documents({})
-
-    if count == 0:
-
-        products_collection.insert_many(
-            default_products
-        )
-
-        print("13 existing products added to MongoDB.")
-
-    else:
-
-        print(f"Products already exist: {count}")
-
-
-# =========================
-# HOME PAGE
-# =========================
+# =========================================================
+# HOME
+# =========================================================
 
 @app.route("/")
 def home():
 
-    products = list(
-        products_collection.find(
-            {
-                "active": {
-                    "$ne": False
-                }
-            }
-        ).sort("_id", 1)
-    )
-
-    car_products = []
-    bike_products = []
-    inverter_battery_products = []
-    inverter_products = []
-
-    for product in products:
-
-        category = product.get(
-            "category",
-            ""
-        )
-
-        if category == "Car Battery":
-
-            car_products.append(product)
-
-        elif category == "Two-Wheeler":
-
-            bike_products.append(product)
-
-        elif category == "Inverter Battery":
-
-            inverter_battery_products.append(
-                product
-            )
-
-        elif category in [
-            "Inverter",
-            "Home Inverter"
-        ]:
-
-            inverter_products.append(
-                product
-            )
-
-    return render_template(
-        "index.html",
-        car_products=car_products,
-        bike_products=bike_products,
-        inverter_battery_products=inverter_battery_products,
-        inverter_products=inverter_products
-    )
-
-
-# =========================
-# TEST DATABASE
-# =========================
-
-@app.route("/test-db")
-def test_db():
-
-    try:
-
-        client.admin.command("ping")
-
-        return "MongoDB Connected Successfully!"
-
-    except Exception as e:
-
-        return f"MongoDB Connection Error: {e}"
-
-
-# =========================
-# PLACE ORDER
-# =========================
-
-@app.route(
-    "/place-order",
-    methods=["POST"]
-)
-def place_order():
-
-    try:
-
-        data = request.get_json()
-
-        order = {
-
-            "product": data.get(
-                "product",
-                ""
-            ),
-
-            "name": data.get(
-                "name",
-                ""
-            ),
-
-            "mobile": data.get(
-                "mobile",
-                ""
-            ),
-
-            "address": data.get(
-                "address",
-                ""
-            ),
-
-            "price": data.get(
-                "price",
-                ""
-            ),
-
-            "status": "Pending",
-
-            "order_date": datetime.now()
-        }
-
-        orders_collection.insert_one(
-            order
-        )
-
-        return jsonify({
-
-            "success": True,
-
-            "message":
-                "Order saved successfully"
-
-        })
-
-    except Exception as e:
-
-        return jsonify({
-
-            "success": False,
-
-            "message": str(e)
-
-        }), 500
-
-
-# =========================
-# ADMIN DASHBOARD
-# =========================
-
-@app.route("/admin")
-def admin():
-
-    orders = list(
-        orders_collection.find().sort(
-            "order_date",
-            -1
-        )
-    )
+    get_database()
 
     products = list(
         products_collection.find().sort(
@@ -389,152 +80,256 @@ def admin():
     )
 
     return render_template(
-        "admin.html",
-        orders=orders,
+        "index.html",
         products=products
     )
 
 
-# =========================
+# =========================================================
+# ADMIN
+# =========================================================
+
+@app.route("/admin")
+def admin():
+
+    get_database()
+
+    products = list(
+        products_collection.find().sort(
+            "_id",
+            -1
+        )
+    )
+
+    orders = list(
+        orders_collection.find().sort(
+            "_id",
+            -1
+        )
+    )
+
+    return render_template(
+        "admin.html",
+        products=products,
+        orders=orders
+    )
+
+
+# =========================================================
 # ADD PRODUCT
-# =========================
+# =========================================================
 
 @app.route(
-    "/admin/add-product",
+    "/add_product",
     methods=["POST"]
 )
 def add_product():
 
+    get_database()
+
+    name = request.form.get(
+        "name",
+        ""
+    ).strip()
+
+    category = request.form.get(
+        "category",
+        ""
+    ).strip()
+
+    capacity = request.form.get(
+        "capacity",
+        ""
+    ).strip()
+
+    price = request.form.get(
+        "price",
+        ""
+    ).strip()
+
+    warranty = request.form.get(
+        "warranty",
+        ""
+    ).strip()
+
+    image = request.files.get(
+        "image"
+    )
+
+    image_name = ""
+
+    if image and image.filename:
+
+        filename = secure_filename(
+            image.filename
+        )
+
+        filepath = os.path.join(
+            app.config["UPLOAD_FOLDER"],
+            filename
+        )
+
+        image.save(filepath)
+
+        image_name = (
+            "uploads/" + filename
+        )
+
+    product = {
+
+        "name": name,
+
+        "category": category,
+
+        "capacity": capacity,
+
+        "price": price,
+
+        "warranty": warranty,
+
+        "image": image_name,
+
+        "created_at": datetime.utcnow()
+    }
+
+    products_collection.insert_one(
+        product
+    )
+
+    return redirect(
+        url_for("admin")
+    )
+
+
+# =========================================================
+# DELETE PRODUCT
+# =========================================================
+
+@app.route(
+    "/delete_product/<product_id>"
+)
+def delete_product(product_id):
+
+    get_database()
+
     try:
 
-        image_path = request.form.get(
-            "old_image",
-            ""
-        ).strip()
-
-        image_file = request.files.get(
-            "image_file"
+        products_collection.delete_one(
+            {
+                "_id": ObjectId(
+                    product_id
+                )
+            }
         )
-
-        if (
-            image_file
-            and image_file.filename
-        ):
-
-            if allowed_file(
-                image_file.filename
-            ):
-
-                filename = secure_filename(
-                    image_file.filename
-                )
-
-                image_file.save(
-                    os.path.join(
-                        app.config["UPLOAD_FOLDER"],
-                        filename
-                    )
-                )
-
-                image_path = (
-                    "uploads/" + filename
-                )
-
-        product = {
-
-            "category": request.form.get(
-                "category",
-                ""
-            ).strip(),
-
-            "name": request.form.get(
-                "name",
-                ""
-            ).strip(),
-
-            "capacity": request.form.get(
-                "capacity",
-                ""
-            ).strip(),
-
-            "price": request.form.get(
-                "price",
-                ""
-            ).strip(),
-
-            "warranty": request.form.get(
-                "warranty",
-                ""
-            ).strip(),
-
-            "image": image_path,
-
-            "active": True,
-
-            "created_at": datetime.now()
-        }
-
-        products_collection.insert_one(
-            product
-        )
-
-        return redirect("/admin")
 
     except Exception as e:
 
-        return f"Product Add Error: {e}"
+        print(
+            "Delete Product Error:",
+            e
+        )
+
+    return redirect(
+        url_for("admin")
+    )
 
 
-# =========================
+# =========================================================
 # EDIT PRODUCT
-# =========================
+# =========================================================
 
 @app.route(
-    "/admin/edit-product",
-    methods=["POST"]
+    "/edit_product/<product_id>",
+    methods=["GET", "POST"]
 )
-def edit_product():
+def edit_product(product_id):
+
+    get_database()
 
     try:
 
-        product_id = request.form.get(
-            "product_id"
+        product = products_collection.find_one(
+            {
+                "_id": ObjectId(
+                    product_id
+                )
+            }
         )
 
-        old_image = request.form.get(
-            "old_image",
+    except Exception:
+
+        return (
+            "Invalid Product ID",
+            400
+        )
+
+    if not product:
+
+        return (
+            "Product not found",
+            404
+        )
+
+    if request.method == "POST":
+
+        name = request.form.get(
+            "name",
             ""
         ).strip()
 
-        image_path = old_image
+        category = request.form.get(
+            "category",
+            ""
+        ).strip()
 
-        image_file = request.files.get(
-            "image_file"
+        capacity = request.form.get(
+            "capacity",
+            ""
+        ).strip()
+
+        price = request.form.get(
+            "price",
+            ""
+        ).strip()
+
+        warranty = request.form.get(
+            "warranty",
+            ""
+        ).strip()
+
+        update_data = {
+
+            "name": name,
+
+            "category": category,
+
+            "capacity": capacity,
+
+            "price": price,
+
+            "warranty": warranty
+        }
+
+        image = request.files.get(
+            "image"
         )
 
-        if (
-            image_file
-            and image_file.filename
-        ):
+        if image and image.filename:
 
-            if allowed_file(
-                image_file.filename
-            ):
+            filename = secure_filename(
+                image.filename
+            )
 
-                filename = secure_filename(
-                    image_file.filename
-                )
+            filepath = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                filename
+            )
 
-                image_file.save(
-                    os.path.join(
-                        app.config["UPLOAD_FOLDER"],
-                        filename
-                    )
-                )
+            image.save(filepath)
 
-                image_path = (
-                    "uploads/" + filename
-                )
+            update_data["image"] = (
+                "uploads/" + filename
+            )
 
         products_collection.update_one(
 
@@ -545,81 +340,136 @@ def edit_product():
             },
 
             {
-                "$set": {
-
-                    "category":
-                        request.form.get(
-                            "category",
-                            ""
-                        ).strip(),
-
-                    "name":
-                        request.form.get(
-                            "name",
-                            ""
-                        ).strip(),
-
-                    "capacity":
-                        request.form.get(
-                            "capacity",
-                            ""
-                        ).strip(),
-
-                    "price":
-                        request.form.get(
-                            "price",
-                            ""
-                        ).strip(),
-
-                    "warranty":
-                        request.form.get(
-                            "warranty",
-                            ""
-                        ).strip(),
-
-                    "image":
-                        image_path,
-
-                    "updated_at":
-                        datetime.now()
-                }
+                "$set": update_data
             }
         )
 
-        return redirect("/admin")
-
-    except Exception as e:
-
-        return f"Product Edit Error: {e}"
-
-
-# =========================
-# UPDATE ORDER STATUS
-# =========================
-
-@app.route(
-    "/admin/update-order-status/<order_id>",
-    methods=["POST"]
-)
-def update_order_status(order_id):
-
-    try:
-
-        status = request.form.get(
-            "status",
-            "Pending"
+        return redirect(
+            url_for("admin")
         )
 
-        allowed_statuses = [
-            "Pending",
-            "Confirmed",
-            "Delivered",
-            "Cancelled"
-        ]
+    products = list(
+        products_collection.find().sort(
+            "_id",
+            -1
+        )
+    )
 
-        if status not in allowed_statuses:
+    orders = list(
+        orders_collection.find().sort(
+            "_id",
+            -1
+        )
+    )
 
-            return "Invalid Order Status"
+    return render_template(
+
+        "admin.html",
+
+        products=products,
+
+        orders=orders,
+
+        edit_product=product
+    )
+
+
+# =========================================================
+# PLACE ORDER
+# =========================================================
+
+@app.route(
+    "/order",
+    methods=["POST"]
+)
+def order():
+
+    get_database()
+
+    customer_name = request.form.get(
+        "customer_name",
+        ""
+    ).strip()
+
+    mobile = request.form.get(
+        "mobile",
+        ""
+    ).strip()
+
+    address = request.form.get(
+        "address",
+        ""
+    ).strip()
+
+    product_name = request.form.get(
+        "product_name",
+        ""
+    ).strip()
+
+    quantity = request.form.get(
+        "quantity",
+        "1"
+    ).strip()
+
+    order_data = {
+
+        "customer_name": customer_name,
+
+        "mobile": mobile,
+
+        "address": address,
+
+        "product_name": product_name,
+
+        "quantity": quantity,
+
+        "status": "Pending",
+
+        "created_at": datetime.utcnow()
+    }
+
+    orders_collection.insert_one(
+        order_data
+    )
+
+    return redirect(
+        url_for("home")
+    )
+
+
+# =========================================================
+# UPDATE ORDER STATUS
+# =========================================================
+
+@app.route(
+    "/update_order/<order_id>",
+    methods=["POST"]
+)
+def update_order(order_id):
+
+    get_database()
+
+    status = request.form.get(
+        "status",
+        "Pending"
+    )
+
+    allowed_status = [
+
+        "Pending",
+
+        "Confirmed",
+
+        "Delivered",
+
+        "Cancelled"
+    ]
+
+    if status not in allowed_status:
+
+        status = "Pending"
+
+    try:
 
         orders_collection.update_one(
 
@@ -631,58 +481,173 @@ def update_order_status(order_id):
 
             {
                 "$set": {
-
-                    "status": status,
-
-                    "status_updated_at":
-                        datetime.now()
+                    "status": status
                 }
             }
         )
 
-        return redirect("/admin")
-
     except Exception as e:
 
-        return f"Order Status Update Error: {e}"
+        print(
+            "Update Order Error:",
+            e
+        )
+
+    return redirect(
+        url_for("admin")
+    )
 
 
-# =========================
-# DELETE PRODUCT
-# =========================
+# =========================================================
+# DELETE ORDER
+# =========================================================
 
 @app.route(
-    "/admin/delete-product/<product_id>",
-    methods=["POST"]
+    "/delete_order/<order_id>"
 )
-def delete_product(product_id):
+def delete_order(order_id):
+
+    get_database()
 
     try:
 
-        products_collection.delete_one({
+        orders_collection.delete_one(
 
-            "_id": ObjectId(
-                product_id
-            )
-
-        })
-
-        return redirect("/admin")
+            {
+                "_id": ObjectId(
+                    order_id
+                )
+            }
+        )
 
     except Exception as e:
 
-        return f"Product Delete Error: {e}"
+        print(
+            "Order Delete Error:",
+            e
+        )
+
+    return redirect(
+        url_for("admin")
+    )
 
 
-# =========================
-# START SERVER
-# =========================
+# =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.route("/health")
+def health():
+
+    try:
+
+        get_database()
+
+        client.admin.command(
+            "ping"
+        )
+
+        return jsonify({
+
+            "status": "OK",
+
+            "database": "Connected"
+        })
+
+    except Exception as e:
+
+        return jsonify({
+
+            "status": "ERROR",
+
+            "database": str(e)
+
+        }), 500
+
+
+# =========================================================
+# DATABASE TEST
+# =========================================================
+
+@app.route("/db-test")
+def db_test():
+
+    try:
+
+        get_database()
+
+        client.admin.command(
+            "ping"
+        )
+
+        product_count = (
+            products_collection.count_documents({})
+        )
+
+        order_count = (
+            orders_collection.count_documents({})
+        )
+
+        # Show only safe information.
+        # Password is NEVER returned.
+
+        uri_safe = MONGO_URI
+
+        if "@" in uri_safe:
+
+            prefix = uri_safe.split(
+                "://",
+                1
+            )[0]
+
+            host_part = uri_safe.split(
+                "@",
+                1
+            )[1]
+
+            uri_safe = (
+                prefix
+                + "://****@"
+                + host_part
+            )
+
+        return jsonify({
+
+            "status": "OK",
+
+            "mongodb": "Connected",
+
+            "database": "Bharat_Battery_DB",
+
+            "products": product_count,
+
+            "orders": order_count,
+
+            "mongo_uri_source": uri_safe
+        })
+
+    except Exception as e:
+
+        return jsonify({
+
+            "status": "ERROR",
+
+            "error": str(e)
+
+        }), 500
+
+
+# =========================================================
+# RUN LOCAL
+# =========================================================
 
 if __name__ == "__main__":
 
-    seed_products()
-
     app.run(
+
+        host="0.0.0.0",
+
+        port=5000,
+
         debug=True
     )
-
