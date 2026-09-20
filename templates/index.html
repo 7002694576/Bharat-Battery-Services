@@ -1,18 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
-    <!-- Google Search Console Verification -->
     <meta name="google-site-verification"
           content="mcoBS1rgQTiJG5fNJ2Hl9DjxhLdlsiDauiu1MwJle9E">
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <title>Bharat Battery Services | TATA Batteries Authorized Agency</title>
 
-    <title>Bharat Battery Services</title>
+    <meta name="description"
+          content="Bharat Battery Services - TATA Batteries Authorized Agency. Car batteries, two-wheeler batteries, inverter batteries and home inverters.">
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -21,12 +20,16 @@
 
 <body>
 
-<header>
-    <div class="container">
+<!-- ================= HEADER ================= -->
 
-        <h1>Bharat Battery Services</h1>
+<header class="header">
 
-        <p>TATA Batteries Authorized Agency</p>
+    <div class="container navbar">
+
+        <div class="logo">
+            <h1>Bharat Battery Services</h1>
+            <span>TATA Batteries Authorized Agency</span>
+        </div>
 
         <nav>
             <a href="#home">Home</a>
@@ -36,72 +39,154 @@
         </nav>
 
     </div>
+
 </header>
 
 
+<!-- ================= HERO ================= -->
+
 <section id="home" class="hero">
 
-    <div class="container">
+    <div class="hero-content">
 
-        <h2>Reliable Batteries for Every Need</h2>
+        <div class="hero-text">
 
-        <p>
-            Car Batteries, Two-Wheeler Batteries,
-            Inverter Batteries and Home Inverters.
-        </p>
+            <span class="badge">
+                🔋 TATA Batteries Authorized Agency
+            </span>
 
-        <p>
-            Genuine Products • Warranty Available • Local Service
-        </p>
+            <h2>
+                Reliable Power<br>
+                <span>For Every Need</span>
+            </h2>
 
-        <a class="button" href="tel:9450060833">
-            📞 Call Now
-        </a>
+            <p>
+                Car Batteries, Two-Wheeler Batteries,
+                Inverter Batteries and Home Inverters.
+            </p>
 
-        <a class="button" href="#order">
-            🛒 Order Now
-        </a>
+            <div class="features">
+
+                <span>✓ Genuine Products</span>
+                <span>✓ Warranty Available</span>
+                <span>✓ Local Service</span>
+
+            </div>
+
+            <div class="hero-buttons">
+
+                <a href="tel:9450060833"
+                   class="btn call-btn">
+                    📞 Call Now
+                </a>
+
+                <a href="#products"
+                   class="btn order-btn">
+                    🛒 View Products
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="battery-visual">
+
+            <div class="battery-icon">
+                🔋
+            </div>
+
+            <h3>
+                Power You Can Trust
+            </h3>
+
+            <p>
+                Quality batteries for your vehicle and home.
+            </p>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<section id="about">
+<!-- ================= ABOUT ================= -->
+
+<section class="about section">
 
     <div class="container">
 
-        <h2>About Us</h2>
+        <div class="section-title">
+            <span>WHO WE ARE</span>
+            <h2>About Us</h2>
+        </div>
 
-        <p>
-            Welcome to <strong>Bharat Battery Services</strong>.
-        </p>
+        <div class="about-card">
 
-        <p>
-            We provide quality batteries and power solutions
-            for cars, two-wheelers, homes and inverter systems.
-        </p>
+            <div class="about-icon">
+                ⚡
+            </div>
 
-        <p>
-            We are a <strong>TATA Batteries Authorized Agency</strong>.
-        </p>
+            <div>
 
-        <p>
-            Proprietor: <strong>Haji Mustakeem Ahmad</strong>
-        </p>
+                <h3>
+                    Welcome to Bharat Battery Services
+                </h3>
+
+                <p>
+                    We provide quality batteries and power
+                    solutions for cars, two-wheelers, homes
+                    and inverter systems.
+                </p>
+
+                <p>
+                    We are a
+                    <strong>TATA Batteries Authorized Agency.</strong>
+                </p>
+
+                <p>
+                    Proprietor:
+                    <strong>Haji Mustakeem Ahmad</strong>
+                </p>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<section id="products">
+<!-- ================= PRODUCTS ================= -->
+
+<section id="products" class="products section">
 
     <div class="container">
 
-        <h2>Our Products</h2>
+        <div class="section-title">
+
+            <span>OUR COLLECTION</span>
+
+            <h2>
+                Our Products
+            </h2>
+
+            <p>
+                Choose the right battery for your vehicle
+                and power requirements.
+            </p>
+
+        </div>
+
+
+        <!-- CAR BATTERIES -->
 
         {% if car_products %}
+
+        <h3 class="category-title">
+            🚗 Car Batteries
+        </h3>
 
         <div class="products-grid">
 
@@ -109,45 +194,71 @@
 
             <div class="product-card">
 
-                {% if product.image %}
-                <img src="{{ url_for('static', filename=product.image) }}"
-                     alt="{{ product.name }}">
-                {% endif %}
+                <div class="product-image">
 
-                <h3>{{ product.name }}</h3>
+                    {% if product.image %}
 
-                <p>
-                    <strong>Category:</strong>
-                    {{ product.category }}
-                </p>
+                    <img
+                        src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}">
 
-                {% if product.capacity %}
-                <p>
-                    <strong>Capacity:</strong>
-                    {{ product.capacity }}
-                </p>
-                {% endif %}
+                    {% else %}
 
-                {% if product.voltage %}
-                <p>
-                    <strong>Voltage:</strong>
-                    {{ product.voltage }}
-                </p>
-                {% endif %}
+                    <div class="no-image">
+                        🔋
+                    </div>
 
-                <h3>₹{{ product.price }}</h3>
+                    {% endif %}
 
-                {% if product.warranty %}
-                <p>
-                    <strong>Warranty:</strong>
-                    {{ product.warranty }}
-                </p>
-                {% endif %}
+                </div>
 
-                <a class="button"
-                   href="#order">
-                    🛒 Order
-                </a>
+
+                <div class="product-info">
+
+                    <h3>
+                        {{ product.name }}
+                    </h3>
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+                    {% if product.capacity %}
+
+                    <p>
+                        <strong>Capacity:</strong>
+                        {{ product.capacity }}
+                    </p>
+
+                    {% endif %}
+
+                    {% if product.voltage %}
+
+                    <p>
+                        <strong>Voltage:</strong>
+                        {{ product.voltage }}
+                    </p>
+
+                    {% endif %}
+
+                    <div class="price">
+                        ₹{{ product.price }}
+                    </div>
+
+                    {% if product.warranty %}
+
+                    <p class="warranty">
+                        🛡️ {{ product.warranty }}
+                    </p>
+
+                    {% endif %}
+
+                    <a href="#order"
+                       class="product-btn">
+                        Order Now
+                    </a>
+
+                </div>
 
             </div>
 
@@ -155,9 +266,236 @@
 
         </div>
 
-        {% else %}
+        {% endif %}
 
-        <p>No products available at the moment.</p>
+
+        <!-- BIKE BATTERIES -->
+
+        {% if bike_products %}
+
+        <h3 class="category-title">
+            🏍️ Two-Wheeler Batteries
+        </h3>
+
+        <div class="products-grid">
+
+            {% for product in bike_products %}
+
+            <div class="product-card">
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}">
+
+                    {% else %}
+
+                    <div class="no-image">
+                        🔋
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+                    {% if product.capacity %}
+
+                    <p>
+                        <strong>Capacity:</strong>
+                        {{ product.capacity }}
+                    </p>
+
+                    {% endif %}
+
+                    {% if product.voltage %}
+
+                    <p>
+                        <strong>Voltage:</strong>
+                        {{ product.voltage }}
+                    </p>
+
+                    {% endif %}
+
+                    <div class="price">
+                        ₹{{ product.price }}
+                    </div>
+
+                    {% if product.warranty %}
+
+                    <p class="warranty">
+                        🛡️ {{ product.warranty }}
+                    </p>
+
+                    {% endif %}
+
+                    <a href="#order"
+                       class="product-btn">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- INVERTER BATTERIES -->
+
+        {% if inverter_battery_products %}
+
+        <h3 class="category-title">
+            🔋 Inverter Batteries
+        </h3>
+
+        <div class="products-grid">
+
+            {% for product in inverter_battery_products %}
+
+            <div class="product-card">
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}">
+
+                    {% else %}
+
+                    <div class="no-image">
+                        🔋
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+                    {% if product.capacity %}
+
+                    <p>
+                        <strong>Capacity:</strong>
+                        {{ product.capacity }}
+                    </p>
+
+                    {% endif %}
+
+                    <div class="price">
+                        ₹{{ product.price }}
+                    </div>
+
+                    {% if product.warranty %}
+
+                    <p class="warranty">
+                        🛡️ {{ product.warranty }}
+                    </p>
+
+                    {% endif %}
+
+                    <a href="#order"
+                       class="product-btn">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- INVERTERS -->
+
+        {% if inverter_products %}
+
+        <h3 class="category-title">
+            ⚡ Home Inverters
+        </h3>
+
+        <div class="products-grid">
+
+            {% for product in inverter_products %}
+
+            <div class="product-card">
+
+                <div class="product-image">
+
+                    {% if product.image %}
+
+                    <img
+                        src="{{ url_for('static', filename=product.image) }}"
+                        alt="{{ product.name }}">
+
+                    {% else %}
+
+                    <div class="no-image">
+                        ⚡
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>{{ product.name }}</h3>
+
+                    <span class="category">
+                        {{ product.category }}
+                    </span>
+
+                    <div class="price">
+                        ₹{{ product.price }}
+                    </div>
+
+                    {% if product.warranty %}
+
+                    <p class="warranty">
+                        🛡️ {{ product.warranty }}
+                    </p>
+
+                    {% endif %}
+
+                    <a href="#order"
+                       class="product-btn">
+                        Order Now
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
 
         {% endif %}
 
@@ -166,83 +504,157 @@
 </section>
 
 
-<section id="order">
+<!-- ================= ORDER ================= -->
+
+<section id="order" class="order-section section">
 
     <div class="container">
 
-        <h2>Place Your Order</h2>
+        <div class="section-title">
 
-        <form action="/place-order"
-              method="POST">
+            <span>QUICK ORDER</span>
 
-            <input type="text"
-                   name="name"
-                   placeholder="Your Name"
-                   required>
+            <h2>
+                Place Your Order
+            </h2>
 
-            <input type="tel"
-                   name="phone"
-                   placeholder="Mobile Number"
-                   required>
+            <p>
+                Fill the form and we will contact you.
+            </p>
 
-            <input type="text"
-                   name="product"
-                   placeholder="Battery / Product Name"
-                   required>
+        </div>
 
-            <textarea name="address"
-                      placeholder="Delivery Address"
-                      required></textarea>
 
-            <button type="submit">
-                Submit Order
-            </button>
+        <div class="order-card">
 
-        </form>
+            <form action="/place-order"
+                  method="POST">
+
+                <div class="form-row">
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Your Name"
+                        required>
+
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Mobile Number"
+                        required>
+
+                </div>
+
+
+                <input
+                    type="text"
+                    name="product"
+                    placeholder="Battery / Product Name"
+                    required>
+
+
+                <textarea
+                    name="address"
+                    placeholder="Delivery Address"
+                    rows="4"
+                    required></textarea>
+
+
+                <button type="submit"
+                        class="submit-btn">
+
+                    🛒 Submit Order
+
+                </button>
+
+            </form>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<section id="contact">
+<!-- ================= CONTACT ================= -->
+
+<section id="contact" class="contact section">
 
     <div class="container">
 
-        <h2>Contact Us</h2>
+        <div class="contact-card">
 
-        <p>
-            <strong>Bharat Battery Services</strong>
-        </p>
+            <div>
+
+                <span class="contact-label">
+                    GET IN TOUCH
+                </span>
+
+                <h2>
+                    Need a Battery?
+                </h2>
+
+                <p>
+                    Contact Bharat Battery Services
+                    for genuine batteries and local service.
+                </p>
+
+                <p>
+                    <strong>
+                        Proprietor: Haji Mustakeem Ahmad
+                    </strong>
+                </p>
+
+            </div>
+
+
+            <div class="contact-buttons">
+
+                <a href="tel:9450060833"
+                   class="btn call-btn">
+
+                    📞 9450060833
+
+                </a>
+
+                <a href="https://wa.me/919450060833"
+                   target="_blank"
+                   class="btn whatsapp-btn">
+
+                    💬 WhatsApp
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="container">
+
+        <h3>
+            Bharat Battery Services
+        </h3>
 
         <p>
             TATA Batteries Authorized Agency
         </p>
 
         <p>
-            Proprietor: Haji Mustakeem Ahmad
+            © 2026 Bharat Battery Services.
+            All Rights Reserved.
         </p>
-
-        <p>
-            📞 <a href="tel:9450060833">9450060833</a>
-        </p>
-
-        <a class="button"
-           href="https://wa.me/919450060833">
-            💬 WhatsApp
-        </a>
 
     </div>
-
-</section>
-
-
-<footer>
-
-    <p>
-        © 2026 Bharat Battery Services.
-        All Rights Reserved.
-    </p>
 
 </footer>
 
