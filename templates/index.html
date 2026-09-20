@@ -1,663 +1,1758 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-    <meta name="google-site-verification"
-          content="mcoBS1rgQTiJG5fNJ2Hl9DjxhLdlsiDauiu1MwJle9E">
+    <meta name="google-site-verification" content="mcoBS1rgQTiJG5fNJ2Hl9DjxhLdlsiDauiu1MwJle9E">
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Bharat Battery Services | TATA Batteries Authorized Agency</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <meta name="description"
-          content="Bharat Battery Services - TATA Batteries Authorized Agency. Car batteries, two-wheeler batteries, inverter batteries and home inverters.">
+    <title>Bharat Battery Services</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #17202a;
+            background: #ffffff;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .top-bar {
+            background: #101820;
+            color: white;
+            padding: 8px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            padding: 18px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        .logo-area img {
+            width: 75px;
+            height: 75px;
+            object-fit: contain;
+        }
+
+
+        .logo-area h1 {
+            font-size: 27px;
+            color: #101820;
+        }
+
+
+        .logo-area p {
+            color: #777;
+            margin-top: 4px;
+        }
+
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .header-btn {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+
+        .call-btn {
+            background: #101820;
+        }
+
+
+        .whatsapp-btn {
+            background: #25D366;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #d71920;
+            padding: 12px 6%;
+        }
+
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 450px;
+            padding: 70px 7%;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(
+                135deg,
+                #101820,
+                #263746
+            );
+            color: white;
+        }
+
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 18px;
+        }
+
+
+        .hero h2 span {
+            color: #d71920;
+        }
+
+
+        .hero p {
+            font-size: 19px;
+            line-height: 1.7;
+            color: #eeeeee;
+            margin-bottom: 25px;
+        }
+
+
+        .hero-btn {
+            display: inline-block;
+            background: #d71920;
+            color: white;
+            text-decoration: none;
+            padding: 14px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        section {
+            padding: 60px 6%;
+        }
+
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+
+        .section-title p {
+            color: #777;
+        }
+
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .product-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+            gap: 25px;
+        }
+
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #eeeeee;
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.12);
+        }
+
+
+        .product-image {
+            height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f8f8;
+            padding: 20px;
+        }
+
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+
+        .product-info {
+            padding: 20px;
+        }
+
+
+        .product-category {
+            display: inline-block;
+            font-size: 11px;
+            color: #d71920;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+
+        .product-info h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+
+        .capacity {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+
+        .warranty {
+            color: #16803c;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+
+        .price {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+
+        .order-btn {
+            width: 100%;
+            padding: 12px;
+            background: #d71920;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        .order-btn:hover {
+            background: #101820;
+        }
+
+
+        .no-products {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #777;
+            padding: 30px;
+        }
+
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            background: #f6f7f8;
+        }
+
+
+        .about-content {
+            max-width: 900px;
+            margin: auto;
+            text-align: center;
+            line-height: 1.8;
+            color: #555;
+            font-size: 17px;
+        }
+
+
+        /* =========================
+           SERVICES
+        ========================= */
+
+        .services {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 25px;
+        }
+
+
+        .service-card {
+            text-align: center;
+            padding: 30px 20px;
+            border: 1px solid #eeeeee;
+            border-radius: 10px;
+        }
+
+
+        .service-card .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+
+        .service-card h3 {
+            margin-bottom: 10px;
+        }
+
+
+        .service-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact {
+            background: #101820;
+            color: white;
+        }
+
+
+        .contact-content {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 40px;
+        }
+
+
+        .contact-info h3 {
+            margin-bottom: 20px;
+            font-size: 25px;
+        }
+
+
+        .contact-info p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #080d11;
+            color: #aaa;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           ORDER MODAL
+        ========================= */
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                rgba(0,0,0,0.65);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+
+        .close {
+            position: absolute;
+            right: 18px;
+            top: 12px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #555;
+        }
+
+
+        .modal-content h2 {
+            margin-bottom: 8px;
+        }
+
+
+        .selected-product {
+            background: #f4f5f6;
+            padding: 12px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+
+        .modal-content input,
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+
+        .modal-content textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+
+        .submit-order {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            background: #25D366;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 1000px) {
+
+            .product-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .top-bar {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
+
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+
+            .logo-area {
+                flex-direction: column;
+            }
+
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+
+
+            .hero {
+                padding: 50px 6%;
+            }
+
+
+            .hero h2 {
+                font-size: 34px;
+            }
+
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .services {
+                grid-template-columns: 1fr;
+            }
+
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<!-- ================= HEADER ================= -->
 
-<header class="header">
+<!-- =========================
+     TOP BAR
+========================= -->
 
-    <div class="container navbar">
+<div class="top-bar">
 
-        <div class="logo">
-            <h1>Bharat Battery Services</h1>
-            <span>TATA Batteries Authorized Agency</span>
+    <div>
+        TATA Batteries Authorized Agency
+    </div>
+
+    <div>
+        📞 9450060833 &nbsp; | &nbsp; 7905357298
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+    <div class="logo-area">
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='logoo.png'
+            ) }}"
+            alt="Bharat Battery Services"
+        >
+
+        <div>
+
+            <h1>
+                Bharat Battery Services
+            </h1>
+
+            <p>
+                TATA Batteries Authorized Agency
+            </p>
+
         </div>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#products">Products</a>
-            <a href="#order">Order</a>
-            <a href="#contact">Contact</a>
-        </nav>
+    </div>
+
+
+    <div class="header-buttons">
+
+        <a
+            href="tel:9450060833"
+            class="header-btn call-btn"
+        >
+            📞 Call
+        </a>
+
+
+        <a
+            href="https://wa.me/919450060833"
+            target="_blank"
+            class="header-btn whatsapp-btn"
+        >
+            WhatsApp
+        </a>
 
     </div>
 
 </header>
 
 
-<!-- ================= HERO ================= -->
 
-<section id="home" class="hero">
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <ul>
+
+        <li>
+            <a href="#home">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="#car-batteries">
+                Car Batteries
+            </a>
+        </li>
+
+        <li>
+            <a href="#two-wheeler">
+                Two-Wheeler
+            </a>
+        </li>
+
+        <li>
+            <a href="#inverter-batteries">
+                Inverter Batteries
+            </a>
+        </li>
+
+        <li>
+            <a href="#inverters">
+                Inverters
+            </a>
+        </li>
+
+        <li>
+            <a href="#services">
+                Services
+            </a>
+        </li>
+
+        <li>
+            <a href="#contact">
+                Contact
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="home">
 
     <div class="hero-content">
 
-        <div class="hero-text">
+        <h2>
+            Reliable Power.
+            <span>Trusted Batteries.</span>
+        </h2>
 
-            <span class="badge">
-                🔋 TATA Batteries Authorized Agency
-            </span>
 
-            <h2>
-                Reliable Power<br>
-                <span>For Every Need</span>
-            </h2>
+        <p>
+            Bharat Battery Services is your trusted
+            destination for TATA Green Batteries,
+            car batteries, two-wheeler batteries,
+            inverter batteries and home inverters.
+        </p>
 
-            <p>
-                Car Batteries, Two-Wheeler Batteries,
-                Inverter Batteries and Home Inverters.
-            </p>
 
-            <div class="features">
+        <a
+            href="#car-batteries"
+            class="hero-btn"
+        >
+            Explore Batteries
+        </a>
 
-                <span>✓ Genuine Products</span>
-                <span>✓ Warranty Available</span>
-                <span>✓ Local Service</span>
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     ABOUT
+========================= -->
+
+<section class="about">
+
+    <div class="section-title">
+
+        <h2>
+            Welcome to Bharat Battery Services
+        </h2>
+
+        <p>
+            Quality batteries and dependable service
+        </p>
+
+    </div>
+
+
+    <div class="about-content">
+
+        <p>
+            Bharat Battery Services is an authorized
+            TATA Batteries agency located at BR Complex,
+            Civil Lines, Gora Bazar Road, Raebareli.
+            We provide batteries for cars, two-wheelers,
+            inverter systems and home power backup.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     CAR BATTERIES
+========================= -->
+
+<section id="car-batteries">
+
+    <div class="section-title">
+
+        <h2>
+            🚗 Car Batteries
+        </h2>
+
+        <p>
+            Reliable batteries for your car
+        </p>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        {% for product in car_products %}
+
+
+        <div class="product-card">
+
+
+            <div class="product-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=product.image
+                    ) }}"
+                    alt="{{ product.name }}"
+                >
 
             </div>
 
-            <div class="hero-buttons">
 
-                <a href="tel:9450060833"
-                   class="btn call-btn">
-                    📞 Call Now
-                </a>
+            <div class="product-info">
 
-                <a href="#products"
-                   class="btn order-btn">
-                    🛒 View Products
-                </a>
+                <span class="product-category">
+                    {{ product.category }}
+                </span>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                <p class="capacity">
+                    {{ product.capacity }}
+                </p>
+
+
+                <p class="warranty">
+                    ✓ {{ product.warranty }}
+                </p>
+
+
+                <div class="price">
+                    {{ product.price }}
+                </div>
+
+
+                <button
+                    class="order-btn"
+                    data-product="{{ product.name }}"
+                    data-price="{{ product.price }}"
+                >
+                    Order Now
+                </button>
 
             </div>
 
         </div>
 
-        <div class="battery-visual">
 
-            <div class="battery-icon">
+        {% else %}
+
+        <div class="no-products">
+            No car batteries available.
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     TWO WHEELER
+========================= -->
+
+<section
+    id="two-wheeler"
+    class="about"
+>
+
+    <div class="section-title">
+
+        <h2>
+            🏍️ Two-Wheeler Batteries
+        </h2>
+
+        <p>
+            Batteries for bikes and scooters
+        </p>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        {% for product in bike_products %}
+
+
+        <div class="product-card">
+
+
+            <div class="product-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=product.image
+                    ) }}"
+                    alt="{{ product.name }}"
+                >
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    {{ product.category }}
+                </span>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                <p class="capacity">
+                    {{ product.capacity }}
+                </p>
+
+
+                <p class="warranty">
+                    ✓ {{ product.warranty }}
+                </p>
+
+
+                <div class="price">
+                    {{ product.price }}
+                </div>
+
+
+                <button
+                    class="order-btn"
+                    data-product="{{ product.name }}"
+                    data-price="{{ product.price }}"
+                >
+                    Order Now
+                </button>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="no-products">
+            No two-wheeler batteries available.
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     INVERTER BATTERIES
+========================= -->
+
+<section id="inverter-batteries">
+
+    <div class="section-title">
+
+        <h2>
+            🔋 Inverter Batteries
+        </h2>
+
+        <p>
+            Power backup batteries for your home
+        </p>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        {% for product in inverter_battery_products %}
+
+
+        <div class="product-card">
+
+
+            <div class="product-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=product.image
+                    ) }}"
+                    alt="{{ product.name }}"
+                >
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    {{ product.category }}
+                </span>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                <p class="capacity">
+                    {{ product.capacity }}
+                </p>
+
+
+                <p class="warranty">
+                    ✓ {{ product.warranty }}
+                </p>
+
+
+                <div class="price">
+                    {{ product.price }}
+                </div>
+
+
+                <button
+                    class="order-btn"
+                    data-product="{{ product.name }}"
+                    data-price="{{ product.price }}"
+                >
+                    Enquire Now
+                </button>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="no-products">
+            No inverter batteries available.
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     INVERTERS
+========================= -->
+
+<section
+    id="inverters"
+    class="about"
+>
+
+    <div class="section-title">
+
+        <h2>
+            ⚡ Home Inverters
+        </h2>
+
+        <p>
+            Reliable home power backup solutions
+        </p>
+
+    </div>
+
+
+    <div class="product-grid">
+
+
+        {% for product in inverter_products %}
+
+
+        <div class="product-card">
+
+
+            <div class="product-image">
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename=product.image
+                    ) }}"
+                    alt="{{ product.name }}"
+                >
+
+            </div>
+
+
+            <div class="product-info">
+
+                <span class="product-category">
+                    {{ product.category }}
+                </span>
+
+
+                <h3>
+                    {{ product.name }}
+                </h3>
+
+
+                <p class="capacity">
+                    {{ product.capacity }}
+                </p>
+
+
+                <p class="warranty">
+                    ✓ {{ product.warranty }}
+                </p>
+
+
+                <div class="price">
+                    {{ product.price }}
+                </div>
+
+
+                <button
+                    class="order-btn"
+                    data-product="{{ product.name }}"
+                    data-price="{{ product.price }}"
+                >
+                    Enquire Now
+                </button>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="no-products">
+            No inverters available.
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================
+     SERVICES
+========================= -->
+
+<section id="services">
+
+    <div class="section-title">
+
+        <h2>
+            Our Services
+        </h2>
+
+        <p>
+            Complete battery solutions
+        </p>
+
+    </div>
+
+
+    <div class="services">
+
+
+        <div class="service-card">
+
+            <div class="icon">
                 🔋
             </div>
 
             <h3>
-                Power You Can Trust
+                Battery Sales
             </h3>
 
             <p>
-                Quality batteries for your vehicle and home.
+                Car, bike, inverter and home
+                batteries from trusted brands.
             </p>
 
         </div>
 
-    </div>
 
-</section>
+        <div class="service-card">
 
+            <div class="icon">
+                🔧
+            </div>
 
-<!-- ================= ABOUT ================= -->
+            <h3>
+                Battery Replacement
+            </h3>
 
-<section class="about section">
+            <p>
+                Professional battery replacement
+                and installation assistance.
+            </p>
 
-    <div class="container">
-
-        <div class="section-title">
-            <span>WHO WE ARE</span>
-            <h2>About Us</h2>
         </div>
 
-        <div class="about-card">
 
-            <div class="about-icon">
+        <div class="service-card">
+
+            <div class="icon">
                 ⚡
             </div>
 
-            <div>
-
-                <h3>
-                    Welcome to Bharat Battery Services
-                </h3>
-
-                <p>
-                    We provide quality batteries and power
-                    solutions for cars, two-wheelers, homes
-                    and inverter systems.
-                </p>
-
-                <p>
-                    We are a
-                    <strong>TATA Batteries Authorized Agency.</strong>
-                </p>
-
-                <p>
-                    Proprietor:
-                    <strong>Haji Mustakeem Ahmad</strong>
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= PRODUCTS ================= -->
-
-<section id="products" class="products section">
-
-    <div class="container">
-
-        <div class="section-title">
-
-            <span>OUR COLLECTION</span>
-
-            <h2>
-                Our Products
-            </h2>
+            <h3>
+                Power Backup
+            </h3>
 
             <p>
-                Choose the right battery for your vehicle
-                and power requirements.
+                Home inverter and battery
+                solutions according to your needs.
             </p>
 
         </div>
 
 
-        <!-- CAR BATTERIES -->
-
-        {% if car_products %}
-
-        <h3 class="category-title">
-            🚗 Car Batteries
-        </h3>
-
-        <div class="products-grid">
-
-            {% for product in car_products %}
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    {% if product.image %}
-
-                    <img
-                        src="{{ url_for('static', filename=product.image) }}"
-                        alt="{{ product.name }}">
-
-                    {% else %}
-
-                    <div class="no-image">
-                        🔋
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-
-                <div class="product-info">
-
-                    <h3>
-                        {{ product.name }}
-                    </h3>
-
-                    <span class="category">
-                        {{ product.category }}
-                    </span>
-
-                    {% if product.capacity %}
-
-                    <p>
-                        <strong>Capacity:</strong>
-                        {{ product.capacity }}
-                    </p>
-
-                    {% endif %}
-
-                    {% if product.voltage %}
-
-                    <p>
-                        <strong>Voltage:</strong>
-                        {{ product.voltage }}
-                    </p>
-
-                    {% endif %}
-
-                    <div class="price">
-                        ₹{{ product.price }}
-                    </div>
-
-                    {% if product.warranty %}
-
-                    <p class="warranty">
-                        🛡️ {{ product.warranty }}
-                    </p>
-
-                    {% endif %}
-
-                    <a href="#order"
-                       class="product-btn">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- BIKE BATTERIES -->
-
-        {% if bike_products %}
-
-        <h3 class="category-title">
-            🏍️ Two-Wheeler Batteries
-        </h3>
-
-        <div class="products-grid">
-
-            {% for product in bike_products %}
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    {% if product.image %}
-
-                    <img
-                        src="{{ url_for('static', filename=product.image) }}"
-                        alt="{{ product.name }}">
-
-                    {% else %}
-
-                    <div class="no-image">
-                        🔋
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-                <div class="product-info">
-
-                    <h3>{{ product.name }}</h3>
-
-                    <span class="category">
-                        {{ product.category }}
-                    </span>
-
-                    {% if product.capacity %}
-
-                    <p>
-                        <strong>Capacity:</strong>
-                        {{ product.capacity }}
-                    </p>
-
-                    {% endif %}
-
-                    {% if product.voltage %}
-
-                    <p>
-                        <strong>Voltage:</strong>
-                        {{ product.voltage }}
-                    </p>
-
-                    {% endif %}
-
-                    <div class="price">
-                        ₹{{ product.price }}
-                    </div>
-
-                    {% if product.warranty %}
-
-                    <p class="warranty">
-                        🛡️ {{ product.warranty }}
-                    </p>
-
-                    {% endif %}
-
-                    <a href="#order"
-                       class="product-btn">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- INVERTER BATTERIES -->
-
-        {% if inverter_battery_products %}
-
-        <h3 class="category-title">
-            🔋 Inverter Batteries
-        </h3>
-
-        <div class="products-grid">
-
-            {% for product in inverter_battery_products %}
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    {% if product.image %}
-
-                    <img
-                        src="{{ url_for('static', filename=product.image) }}"
-                        alt="{{ product.name }}">
-
-                    {% else %}
-
-                    <div class="no-image">
-                        🔋
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-                <div class="product-info">
-
-                    <h3>{{ product.name }}</h3>
-
-                    <span class="category">
-                        {{ product.category }}
-                    </span>
-
-                    {% if product.capacity %}
-
-                    <p>
-                        <strong>Capacity:</strong>
-                        {{ product.capacity }}
-                    </p>
-
-                    {% endif %}
-
-                    <div class="price">
-                        ₹{{ product.price }}
-                    </div>
-
-                    {% if product.warranty %}
-
-                    <p class="warranty">
-                        🛡️ {{ product.warranty }}
-                    </p>
-
-                    {% endif %}
-
-                    <a href="#order"
-                       class="product-btn">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
-
-        <!-- INVERTERS -->
-
-        {% if inverter_products %}
-
-        <h3 class="category-title">
-            ⚡ Home Inverters
-        </h3>
-
-        <div class="products-grid">
-
-            {% for product in inverter_products %}
-
-            <div class="product-card">
-
-                <div class="product-image">
-
-                    {% if product.image %}
-
-                    <img
-                        src="{{ url_for('static', filename=product.image) }}"
-                        alt="{{ product.name }}">
-
-                    {% else %}
-
-                    <div class="no-image">
-                        ⚡
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-                <div class="product-info">
-
-                    <h3>{{ product.name }}</h3>
-
-                    <span class="category">
-                        {{ product.category }}
-                    </span>
-
-                    <div class="price">
-                        ₹{{ product.price }}
-                    </div>
-
-                    {% if product.warranty %}
-
-                    <p class="warranty">
-                        🛡️ {{ product.warranty }}
-                    </p>
-
-                    {% endif %}
-
-                    <a href="#order"
-                       class="product-btn">
-                        Order Now
-                    </a>
-
-                </div>
-
-            </div>
-
-            {% endfor %}
-
-        </div>
-
-        {% endif %}
-
     </div>
 
 </section>
 
 
-<!-- ================= ORDER ================= -->
 
-<section id="order" class="order-section section">
+<!-- =========================
+     CONTACT
+========================= -->
 
-    <div class="container">
+<section
+    id="contact"
+    class="contact"
+>
 
-        <div class="section-title">
+    <div class="section-title">
 
-            <span>QUICK ORDER</span>
+        <h2>
+            Contact Us
+        </h2>
 
-            <h2>
-                Place Your Order
-            </h2>
+        <p>
+            Get in touch with Bharat Battery Services
+        </p>
+
+    </div>
+
+
+    <div class="contact-content">
+
+
+        <div class="contact-info">
+
+            <h3>
+                Bharat Battery Services
+            </h3>
+
 
             <p>
-                Fill the form and we will contact you.
+                👤 Proprietor:
+                Haji Mustakeem Ahmad
+            </p>
+
+
+            <p>
+                📍 BR Complex, Civil Lines,
+                Gora Bazar Road,
+                Raebareli - 229001
+            </p>
+
+
+            <p>
+                📞
+                <a href="tel:9450060833">
+                    9450060833
+                </a>
+            </p>
+
+
+            <p>
+                📞
+                <a href="tel:7905357298">
+                    7905357298
+                </a>
             </p>
 
         </div>
 
 
-        <div class="order-card">
+        <div class="contact-info">
 
-            <form action="/place-order"
-                  method="POST">
-
-                <div class="form-row">
-
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Your Name"
-                        required>
-
-                    <input
-                        type="tel"
-                        name="phone"
-                        placeholder="Mobile Number"
-                        required>
-
-                </div>
+            <h3>
+                TATA Batteries
+            </h3>
 
 
-                <input
-                    type="text"
-                    name="product"
-                    placeholder="Battery / Product Name"
-                    required>
+            <p>
+                We are an authorized TATA
+                Batteries agency.
+            </p>
 
 
-                <textarea
-                    name="address"
-                    placeholder="Delivery Address"
-                    rows="4"
-                    required></textarea>
+            <p>
+                For product availability,
+                pricing and battery selection,
+                contact us directly.
+            </p>
 
 
-                <button type="submit"
-                        class="submit-btn">
-
-                    🛒 Submit Order
-
-                </button>
-
-            </form>
+            <a
+                href="https://wa.me/919450060833"
+                target="_blank"
+                class="header-btn whatsapp-btn"
+            >
+                💬 WhatsApp Us
+            </a>
 
         </div>
+
 
     </div>
 
 </section>
 
 
-<!-- ================= CONTACT ================= -->
 
-<section id="contact" class="contact section">
-
-    <div class="container">
-
-        <div class="contact-card">
-
-            <div>
-
-                <span class="contact-label">
-                    GET IN TOUCH
-                </span>
-
-                <h2>
-                    Need a Battery?
-                </h2>
-
-                <p>
-                    Contact Bharat Battery Services
-                    for genuine batteries and local service.
-                </p>
-
-                <p>
-                    <strong>
-                        Proprietor: Haji Mustakeem Ahmad
-                    </strong>
-                </p>
-
-            </div>
-
-
-            <div class="contact-buttons">
-
-                <a href="tel:9450060833"
-                   class="btn call-btn">
-
-                    📞 9450060833
-
-                </a>
-
-                <a href="https://wa.me/919450060833"
-                   target="_blank"
-                   class="btn whatsapp-btn">
-
-                    💬 WhatsApp
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FOOTER ================= -->
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
-    <div class="container">
-
-        <h3>
-            Bharat Battery Services
-        </h3>
-
-        <p>
-            TATA Batteries Authorized Agency
-        </p>
-
-        <p>
-            © 2026 Bharat Battery Services.
-            All Rights Reserved.
-        </p>
-
-    </div>
+    © 2026 Bharat Battery Services.
+    All Rights Reserved.
 
 </footer>
 
 
+
+<!-- =========================
+     ORDER MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="orderModal"
+>
+
+
+    <div class="modal-content">
+
+
+        <span
+            class="close"
+            id="closeModal"
+        >
+            &times;
+        </span>
+
+
+        <h2>
+            Place Your Order
+        </h2>
+
+
+        <p>
+            Enter your details below.
+        </p>
+
+
+        <div
+            class="selected-product"
+            id="selectedProduct"
+        >
+            Product
+        </div>
+
+
+        <form id="orderForm">
+
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="Your Name"
+                required
+            >
+
+
+            <input
+                type="tel"
+                id="customerMobile"
+                placeholder="Mobile Number"
+                maxlength="10"
+                required
+            >
+
+
+            <textarea
+                id="customerAddress"
+                placeholder="Delivery Address"
+                required
+            ></textarea>
+
+
+            <button
+                type="submit"
+                class="submit-order"
+            >
+                Submit Order & WhatsApp
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+    let selectedProduct = "";
+    let selectedPrice = "";
+
+
+    const modal =
+        document.getElementById(
+            "orderModal"
+        );
+
+
+    const closeModal =
+        document.getElementById(
+            "closeModal"
+        );
+
+
+    const selectedProductBox =
+        document.getElementById(
+            "selectedProduct"
+        );
+
+
+    /* =========================
+       OPEN ORDER MODAL
+    ========================= */
+
+    document
+        .querySelectorAll(".order-btn")
+        .forEach(function(button) {
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+
+                    selectedProduct =
+                        button.getAttribute(
+                            "data-product"
+                        );
+
+
+                    selectedPrice =
+                        button.getAttribute(
+                            "data-price"
+                        );
+
+
+                    selectedProductBox.innerHTML =
+                        selectedProduct +
+                        " — " +
+                        selectedPrice;
+
+
+                    modal.style.display =
+                        "flex";
+
+                }
+            );
+
+        });
+
+
+    /* =========================
+       CLOSE MODAL
+    ========================= */
+
+    closeModal.addEventListener(
+        "click",
+        function() {
+
+            modal.style.display =
+                "none";
+
+        }
+    );
+
+
+    window.addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === modal
+            ) {
+
+                modal.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       SUBMIT ORDER
+    ========================= */
+
+    document
+        .getElementById("orderForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document
+                    .getElementById(
+                        "customerName"
+                    )
+                    .value
+                    .trim();
+
+
+                const mobile =
+                    document
+                    .getElementById(
+                        "customerMobile"
+                    )
+                    .value
+                    .trim();
+
+
+                const address =
+                    document
+                    .getElementById(
+                        "customerAddress"
+                    )
+                    .value
+                    .trim();
+
+
+                /* MOBILE VALIDATION */
+
+                if (
+                    !/^[0-9]{10}$/.test(
+                        mobile
+                    )
+                ) {
+
+                    alert(
+                        "Please enter a valid 10-digit mobile number."
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+
+                    /* SAVE TO MONGODB */
+
+                    const response =
+                        await fetch(
+                            "/place-order",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify({
+
+                                        product:
+                                            selectedProduct,
+
+                                        name:
+                                            name,
+
+                                        mobile:
+                                            mobile,
+
+                                        address:
+                                            address,
+
+                                        price:
+                                            selectedPrice
+
+                                    })
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (
+                        result.success
+                    ) {
+
+
+                        /* WHATSAPP MESSAGE */
+
+                        const message =
+                            "New Order - Bharat Battery Services\n\n" +
+
+                            "Product: " +
+                            selectedProduct +
+                            "\n" +
+
+                            "Price: " +
+                            selectedPrice +
+                            "\n\n" +
+
+                            "Customer Name: " +
+                            name +
+                            "\n" +
+
+                            "Mobile: " +
+                            mobile +
+                            "\n" +
+
+                            "Address: " +
+                            address;
+
+
+                        const whatsappURL =
+                            "https://wa.me/919450060833?text=" +
+                            encodeURIComponent(
+                                message
+                            );
+
+
+                        window.open(
+                            whatsappURL,
+                            "_blank"
+                        );
+
+
+                        alert(
+                            "Order submitted successfully!"
+                        );
+
+
+                        document
+                            .getElementById(
+                                "orderForm"
+                            )
+                            .reset();
+
+
+                        modal.style.display =
+                            "none";
+
+
+                    } else {
+
+
+                        alert(
+                            "Order Error: " +
+                            result.message
+                        );
+
+                    }
+
+
+                } catch (error) {
+
+
+                    alert(
+                        "Something went wrong. Please try again."
+                    );
+
+
+                    console.error(
+                        error
+                    );
+
+                }
+
+            }
+        );
+
+</script>
+
+
 </body>
+
 </html>
