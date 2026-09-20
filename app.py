@@ -7,6 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+
 # =========================================================
 # MONGODB
 # =========================================================
@@ -15,10 +16,6 @@ MONGO_URI = os.environ.get("MONGO_URI")
 
 if not MONGO_URI:
     raise Exception("MONGO_URI environment variable is missing")
-
-# IMPORTANT:
-# MongoClient is created only when get_database() is called.
-# This avoids MongoClient being created before Gunicorn forks.
 
 client = None
 db = None
@@ -72,6 +69,7 @@ def home():
 
     get_database()
 
+    # Get all products from MongoDB
     products = list(
         products_collection.find().sort(
             "_id",
@@ -79,9 +77,80 @@ def home():
         )
     )
 
+    # -----------------------------------------------------
+    # CAR BATTERIES
+    # -----------------------------------------------------
+
+    car_products = [
+        product
+        for product in products
+        if product.get("category", "").strip().lower()
+        in [
+            "car",
+            "car battery",
+            "car batteries"
+        ]
+    ]
+
+    # -----------------------------------------------------
+    # BIKE BATTERIES
+    # -----------------------------------------------------
+
+    bike_products = [
+        product
+        for product in products
+        if product.get("category", "").strip().lower()
+        in [
+            "bike",
+            "bike battery",
+            "bike batteries",
+            "2 wheeler",
+            "2-wheeler",
+            "two wheeler",
+            "two-wheeler"
+        ]
+    ]
+
+    # -----------------------------------------------------
+    # INVERTER BATTERIES
+    # -----------------------------------------------------
+
+    inverter_battery_products = [
+        product
+        for product in products
+        if product.get("category", "").strip().lower()
+        in [
+            "inverter battery",
+            "inverter batteries"
+        ]
+    ]
+
+    # -----------------------------------------------------
+    # INVERTERS
+    # -----------------------------------------------------
+
+    inverter_products = [
+        product
+        for product in products
+        if product.get("category", "").strip().lower()
+        in [
+            "inverter",
+            "inverters"
+        ]
+    ]
+
     return render_template(
         "index.html",
-        products=products
+
+        products=products,
+
+        car_products=car_products,
+
+        bike_products=bike_products,
+
+        inverter_battery_products=inverter_battery_products,
+
+        inverter_products=inverter_products
     )
 
 
@@ -110,7 +179,9 @@ def admin():
 
     return render_template(
         "admin.html",
+
         products=products,
+
         orders=orders
     )
 
@@ -587,9 +658,6 @@ def db_test():
         order_count = (
             orders_collection.count_documents({})
         )
-
-        # Show only safe information.
-        # Password is NEVER returned.
 
         uri_safe = MONGO_URI
 
